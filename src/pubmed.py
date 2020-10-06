@@ -2,8 +2,7 @@
 #pubmed.py 
 """
 From a directory containing several publications in pdf format,
-the script creates a csv file with the 'pmid','pmcid','Year','Authors','Title', 'Journal', 'DOI','keywords', 'Abstract' for every publications.
-Those informations (Metadata) are retrieved using Pubmed API.
+the script uses Pubmed API to retrieve publication metadata. 
 """
 import os
 import glob
@@ -162,6 +161,7 @@ def get_metadata_pubmed(pmid):
     publication_metadata['Abstract']=abstract
 
     return publication_metadata
+
 
 ################################
 ### FORMAT related functions ###
