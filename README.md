@@ -17,4 +17,4 @@ pip install -r requirements.txt
 Run `python pdf_infos.py` will create a IDs_table.csv, Publication_Metadata.csv/.json and Publication_Informations.csv/.json containing informations about the pdf files present in the ./publications folder
 
 
-# Scripts description :
+# Script description :
