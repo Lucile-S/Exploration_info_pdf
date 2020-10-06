@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# pdf_word_count.py 
+# text_mining.py 
 import numpy as np
 import pandas as pd
 import dateutil.parser
