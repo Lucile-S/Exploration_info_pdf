@@ -1,9 +1,11 @@
 # Project 
 The aim of this project is to extract informations from PDF format scientific publications related to AAV virus (adeno-associated virus).
+
 Those informations are then incluted into a csv file and converted to json format in order to be transferred to a Neo4j database.
 
 # Get Started 
 The use of venv is recommended for creating virtual environment with all necessary packages listed in `requirements.txt`
+
 ```
 python -m venv venv/ 
 source ./venv/bin/activate # OSX - bash/zsh
