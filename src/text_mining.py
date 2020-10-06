@@ -189,28 +189,18 @@ if __name__ == "__main__":
         print(pdf_path)
         page_count = pdf_page_count(pdf_path)
         splitted_text, text, _ = pdf_to_text_pdfminer(pdf_path,0,page_count,retstr = StringIO())
-        #splitted_text, btext = pdf_to_text_pdfminer(pdf_path,0,page_count,retstr = BytesIO())
         AAV_terms = [ key for key in find_AAV_terms(text).keys()]
         xml_text = pdf_to_xml(pdf_path)
-        #print(text)
-        #print(xml_text)
-        #print(splitted_text)
-        #print(parser.from_file(pdf_path))
         for AAV_term in AAV_terms: 
             print(AAV_term)
-            #x =find_AAV_term_related_publications2(xml_text, AAV_term)
-            # x =find_AAV_term_related_publications2(splitted_text, AAV_term)
+            # x = find_AAV_term_related_publications(xml_text, AAV_term)
+            # y = find_AAV_term_related_publications2(splitted_text, AAV_term)
             # print(x)
+            # print(y)
             print('-----next AAV term------')
-        print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+        print('--------------------------------')
         print('--------next Publication------')
-            
-    # x= find_AAV_term_related_publications2(splitted_text, AAV_term)
-   
-    # print('---------------')
-    # y = find_AAV_term_related_publications(splitted_text, AAV_term)
-    # print(y)
-    # print(len(y))
- 
+
+
 
 
