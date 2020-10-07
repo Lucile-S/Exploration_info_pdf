@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # homemade package
+import sys
+sys.path.append('../src')
 from pubmed import *
 from utils import *
 from csv_to_json import *
