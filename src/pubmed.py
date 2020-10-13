@@ -2,7 +2,8 @@
 #pubmed.py 
 """
 From a directory containing several publications in pdf format,
-the script uses Pubmed API to retrieve publication metadata. 
+the script creates a csv file with the 'pmid','pmcid','Year','Authors','Title', 'Journal', 'DOI','keywords', 'Abstract' for every publications.
+Those informations (Metadata) are retrieved using Pubmed API.
 """
 import os
 import glob
@@ -63,10 +64,15 @@ def get_pmcid_and_doi(pmid:str):
     query_url = f"https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/?tool=my_tool&email=my_email@example.com&ids={pmid}&format=json"
     response = requests.get(query_url)
     result = response.json()
-    pmcid = result['records'][0]['pmcid']
-    doi= result['records'][0]['doi']
+    try:
+        pmcid = result['records'][0]['pmcid']
+    except:
+        pmcid = ""
+    try :
+        doi= result['records'][0]['doi']
+    except: 
+        doi = ""
     return pmcid, doi
-
 #################################
 # METADATA related functions    #
 #################################
@@ -85,13 +91,20 @@ def get_metadata_pubmed(pmid):
     # init a list that will contain metadata of the publication
     publication_metadata = {}
 
-    # store pubmed id
-    publication_metadata['PMID']=pmid
-    #print(pmid)
-
-    # store pmc id
+   # store pmc id
     pmcid, doi = get_pmcid_and_doi(pmid)
     publication_metadata['PMCID']=pmcid
+    if not doi:
+        try:
+            doi_path = "./PubmedArticle/PubmedData/ArticleIdList/ArticleId"
+            for article_id in root.findall(doi_path):
+                if article_id.attrib['IdType'] == 'doi':
+                    doi = article_id.text
+                else :
+                    doi = ""
+        except:
+            doi= ""
+
 
     # fetch XML abstract from pubmed
     publication_url =  f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id={pmid}&retmode=XML&rettype=abstract"
@@ -106,20 +119,35 @@ def get_metadata_pubmed(pmid):
     publication_metadata['Title']=title
     #print(title)
 
+ 
     # year of publication 
     try: 
         year = int(get_data(root, "Article/ArticleDate/Year"))
         publication_metadata['Year']=year 
         #print(year)
-    except:
-        year = int(get_data(root, "DateCompleted/Year"))
-        publication_metadata['Year']=year 
+    except: 
+        if get_data(root, "Article/Journal/JournalIssue/PubDate/Year")  :
+            year = int(get_data(root, "Article/Journal/JournalIssue/PubDate/Year"))
+            publication_metadata['Year']=year 
+        if get_data(root, "DateCompleted/Year") :
+            year = int(get_data(root, "DateCompleted/Year"))
+            publication_metadata['Year']=year
+        if  get_data(root, "Article/Journal/JournalIssue/PubDate/MedlineDate"): 
+            year = int( re.sub(r'[^\d]','',get_data(root, "Article/Journal/JournalIssue/PubDate/MedlineDate")))
+            publication_metadata['Year']=year
+        else :
+            year =""
         #print(year)
     
     # journal of publication 
-    journal = get_data(root, "/MedlineJournalInfo/MedlineTA")
-    publication_metadata['Journal']=journal
+    if  get_data(root, "/MedlineJournalInfo/MedlineTA"):
+        journal = get_data(root, "/MedlineJournalInfo/MedlineTA")
+        publication_metadata['Journal']=journal
+    else :
+        journal = get_data(root, "Article/Journal/Title")
+        publication_metadata['Journal']=journal
     #print(journal)
+
 
     # DOI - if present
     ids_path = "./PubmedArticle/PubmedData/ArticleIdList/ArticleId"
