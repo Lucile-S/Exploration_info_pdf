@@ -246,7 +246,7 @@ def get_medata_pdfminer(pdf_path):
         Journal = Journal.group(0).replace('\n'," ").replace(':','').replace(".","").strip()
 
     # get authors
-    print(first_page)
+    #print(first_page)
     regex_authors=r'''(\b[A-Z]{1}[a-z]*[-\s][A-Z]{0,1}.?\s?[A-Z][a-z]*\s?[A-Z]{0,1}\w*[0-9,]\b)'''
     authors= re.findall(regex_authors, first_page)
     Authors = [re.sub("\d+", "", author).replace(',','') for author in authors]
