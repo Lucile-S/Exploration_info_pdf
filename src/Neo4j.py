@@ -8,14 +8,13 @@ import json
 import os
 import glob
 import logging
-# from py2neo import Graph, Database
 
 # check If Neo4j package is working
 print(neo4j_version)
 
 # parameters
 config = configparser.ConfigParser()
-config.read(cfg)
+config.read(neo4j_database.ini)
 uri  = config['myneo4j']['uri']
 user = config['myneo4j']['user']
 pwd = config['myneo4j']['passwd']
