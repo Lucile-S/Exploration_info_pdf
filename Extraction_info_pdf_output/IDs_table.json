@@ -1,0 +1,50 @@
+[
+    {
+        "DOI": "doi:10.1016/j.omtm.2020.06.003",
+        "PMCID": "PMC7329936",
+        "PMID": "32637455",
+        "Publi_ID": "Pub_000001",
+        "Title": "Development of AAV Variants with Human Hepatocyte Tropism and Neutralizing Antibody Escape Capacity",
+        "PDF_name": "2020_Development of AAV Variants with Human Hepatocyte Tropism and Neutralizing Antibody Escape Capacity.pdf"
+    },
+    {
+        "DOI": "doi:10.1038/gt.2017.85",
+        "PMCID": "PMC5746594",
+        "PMID": "28872643",
+        "Publi_ID": "Pub_000002",
+        "Title": "Tropism of engineered and evolved recombinant AAV serotypes in the rd1 mouse and ex vivo primate retina",
+        "PDF_name": "2017_Tropism of engineered and evolved recombinant AAVserotypes in therd1mouse andex vivoprimate retina.pdf"
+    },
+    {
+        "DOI": "10.1172/jci",
+        "PMCID": "PMC6948855",
+        "PMID": "31723052",
+        "Publi_ID": "Pub_000003",
+        "Title": "Using a barcoded AAV capsid library to select for clinically relevant gene therapy vectors",
+        "PDF_name": "2019_Using a barcoded AAV capsid library to select for clinically relevant gene therapy vectors.pdf"
+    },
+    {
+        "DOI": "doi:10.1016/j.ymthe.2020.02.009",
+        "PMCID": "PMC7132618",
+        "PMID": "32105604",
+        "Publi_ID": "Pub_000004",
+        "Title": "Pre-arrayed Pan-AAV Peptide Display Libraries for Rapid Single-Round Screening",
+        "PDF_name": "2020_Pre-arrayed Pan-AAV Peptide Display Libraries for Rapid Single-Round Screening.pdf"
+    },
+    {
+        "DOI": "doi:10.1016/j.omtm.2019.01.008",
+        "PMCID": "PMC6378346",
+        "PMID": "30815511",
+        "Publi_ID": "Pub_000005",
+        "Title": "Capsid Modifications for Targeting and Improving the Efficacy of AAV Vectors",
+        "PDF_name": "2019_Capsid Modifications for Targeting and Improving the Efficacy of AAV Vectors.pdf"
+    },
+    {
+        "DOI": "10.1016/j.cobme.2018.09.004",
+        "PMCID": "PMC6516759",
+        "PMID": "31106283",
+        "Publi_ID": "Pub_000006",
+        "Title": "Adeno-Associated Virus (AAV) Vectors: Rational Design Strategies for Capsid Engineering",
+        "PDF_name": "2018_Adeno-Associated Virus Vectors- Rational Design Strategies for Capsid Engineering.pdf"
+    }
+]
