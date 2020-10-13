@@ -139,7 +139,7 @@ def pdf_to_xml(pdf_path):
     return soup
 
 
-def find_AAV_term_related_publications(xml_text, AAV_term):
+def find_AAV_term_related_publications_xml(xml_text, AAV_term):
     AAV_term_related_references = []
     regex_ref  = r'''^[ ]?\d+( *\**\.)* ([A-Z]\S* ([A-Z]\S* )*[A-Z]\w*(, )*)+'''
     regex_AAV = re.split(r"^(AAV\d{0,1})", AAV_term)[1]
@@ -153,7 +153,7 @@ def find_AAV_term_related_publications(xml_text, AAV_term):
             AAV_term_related_references.append(ref)
     return AAV_term_related_references
 
-def find_AAV_term_related_publications2(splitted_text, AAV_term):
+def find_AAV_term_related_publications(splitted_text, AAV_term):
     AAV_term_related_references = []
     regex_ref  = r'''^\d+( *\**\.)* ([A-Z]\S* ([A-Z]\S* )*[A-Z]\w*(, )*)+'''
     regex_AAV = re.split(r"^(AAV\d{0,1})", AAV_term)[1]
@@ -163,11 +163,12 @@ def find_AAV_term_related_publications2(splitted_text, AAV_term):
         if re.search(regex_ref, text,re.M) and re.search(regex_AAV, text,re.M | re.I):
             ref = re.split(r'^[0-9]{1,2}[.]{0,1}', text.replace('\n',' ').replace('**.', "").replace('*.', ""))[1].strip()
             # print(text)
-            # print("!!!!!")
             AAV_term_related_references.append(ref)
     return AAV_term_related_references
 
-
+#####################################
+#          Function Test            #
+#####################################
 
 
 if __name__ == "__main__":
@@ -185,22 +186,19 @@ if __name__ == "__main__":
     #pdf_path ="/home/lucile/Extraction_info_pdf/publications/2017_Tropism of engineered and evolved recombinant AAVserotypes in therd1mouse andex vivoprimate retina.pdf"
 
     # loop over pdf publications
-    for pdf_path in pdf_paths[1:2]:
+    for pdf_path in pdf_paths:
         print(pdf_path)
         page_count = pdf_page_count(pdf_path)
         splitted_text, text, _ = pdf_to_text_pdfminer(pdf_path,0,page_count,retstr = StringIO())
+        #splitted_text, btext = pdf_to_text_pdfminer(pdf_path,0,page_count,retstr = BytesIO())
         AAV_terms = [ key for key in find_AAV_terms(text).keys()]
         xml_text = pdf_to_xml(pdf_path)
         for AAV_term in AAV_terms: 
             print(AAV_term)
-            # x = find_AAV_term_related_publications(xml_text, AAV_term)
-            # y = find_AAV_term_related_publications2(splitted_text, AAV_term)
-            # print(x)
-            # print(y)
             print('-----next AAV term------')
-        print('--------------------------------')
+        print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
         print('--------next Publication------')
-
+            
 
 
 
