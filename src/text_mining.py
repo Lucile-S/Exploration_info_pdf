@@ -48,7 +48,6 @@ from spacy.tokenizer import Tokenizer
 from spacy.util import compile_prefix_regex, compile_infix_regex, compile_suffix_regex
 nlp = spacy.load('en')
 
-
 ##############################
 ### Custom tokenizer Spacy ###
 ##############################
