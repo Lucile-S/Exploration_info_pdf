@@ -14,18 +14,34 @@ pip install -r requirements.txt
 ```
 
 # Get pdf informations
-Run `run pdf_infos_app.py` script will create:
+Run `run pdf_infos.py` script will create:
 - IDs_table.csv, 
 - Publication_Metadata.csv/.json
 - and Publication_Informations.csv/.json 
 Those files contain informations (Metadata and AAV-related informations) about the pdf files present in the ./publications folder.
 
-Run `run pdf_infos_app.py` script will create:
 
 # Streamlit PDF information extraction Application
-
+Run ` streamlit run extraction_info_pdf.py` to open a PDF information extraction tool. 
 <p align="center">
   <img src="Img/capture_extraction_info_pdf_app.jpg" width="650" title="Streamlit Application">
 </p>
+
+- Upload a publication in pdf format or select a folder containing pdf files.
+- Indicate if you want to upload existing csv files (see below) in order to add new data to them.
+- Metadata (Title, Authors, DOI, PMID, PMCID, Keywords, Abstract, Journal, Year, Pdf Word Count) are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika), regex patterns and pubmed API.
+- AAV terms, frequency and linked publication references are retrieved
+- Retrieved informations are stored into those csv files : 
+  - IDs_table.csv, 
+  - Publication_Metadata.csv,
+  - and Publication_Informations.csv,
+- Json files are generated from csv files 
+- Csv and json files are saved into the extraction_info_pdf_output/ folder
+- Choose to import json data to a Neo4j database by adding a configuration file (`neoj4_database.ini`).
+
+<p align="center">
+  <img src="Img/capture_Neo4j_test_example.jpg" width="650" title="Neo4j Example">
+</p>
+
 
 # Script description :
