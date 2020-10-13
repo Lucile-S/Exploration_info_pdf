@@ -25,7 +25,7 @@ Run `run pdf_infos_app.py` script will create:
 # Streamlit PDF information extraction Application
 
 <p align="center">
-  <img src="" width="350" title="">
+  <img src="Img/capture_extraction_info_pdf_app.jpg" width="350" title="Streamlit Application">
 </p>
 
 # Script description :
