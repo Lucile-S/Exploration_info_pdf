@@ -3,7 +3,7 @@
 # ref : https://towardsdatascience.com/neo4j-cypher-python-7a919a372be7
 from neo4j import __version__ as neo4j_version
 from neo4j import GraphDatabase
-import databaseconfig as cfg
+import configparser
 import json
 import os
 import glob
@@ -14,11 +14,11 @@ import logging
 print(neo4j_version)
 
 # parameters
-uri = cfg.myneo4j["uri"]
-user =   cfg.myneo4j["user"]
-pwd =  cfg.myneo4j["passwd"]
-role = cfg.myneo4j["role"]
-#db = cfg.myneo4j["database"]
+config = configparser.ConfigParser()
+config.read(cfg)
+uri  = config['myneo4j']['uri']
+user = config['myneo4j']['user']
+pwd = config['myneo4j']['passwd']
 
 # Define a connection class to connect to the graph database
 class Neo4jConnection:
