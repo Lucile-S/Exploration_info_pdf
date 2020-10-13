@@ -176,9 +176,9 @@ if __name__ == "__main__":
 
     ## Create a dataframe df to store all results or open a existing one to add new data 
     try:
-        df = pd.read_csv(project_dir + csv_name_Metadata + '.csv')
-        IDs_table = pd.read_csv(project_dir + 'IDs_table.csv')
-        AAV_df =pd.read_csv(project_dir + csv_name_Infos + '.csv')
+        df = pd.read_csv(save_dir +'/'+ csv_name_Metadata + '.csv')
+        IDs_table = pd.read_csv(save_dir +'/'+'IDs_table.csv')
+        AAV_df =pd.read_csv(save_dir +'/'+ csv_name_Infos + '.csv')
         if df is not None:
             print('CSV files exits already, only new data will be append to them.')
             logging.info('CSV files exits already, only new data will be append to them.')
@@ -277,7 +277,3 @@ if __name__ == "__main__":
     print(AAV_df.head())
 
  
-
-      
-
-
