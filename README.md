@@ -14,7 +14,18 @@ pip install -r requirements.txt
 ```
 
 # Get pdf informations
-Run `python pdf_infos.py` will create a IDs_table.csv, Publication_Metadata.csv/.json and Publication_Informations.csv/.json containing informations about the pdf files present in the ./publications folder
+Run `run pdf_infos_app.py` script will create:
+- IDs_table.csv, 
+- Publication_Metadata.csv/.json
+- and Publication_Informations.csv/.json 
+Those files contain informations (Metadata and AAV-related informations) about the pdf files present in the ./publications folder.
 
+Run `run pdf_infos_app.py` script will create:
+
+# Streamlit PDF information extraction Application
+
+<p align="center">
+  <img src="" width="350" title="">
+</p>
 
 # Script description :
