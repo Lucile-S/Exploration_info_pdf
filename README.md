@@ -3,6 +3,10 @@ The aim of this project is to extract informations from PDF format scientific pu
 
 Those informations are then incluted into a csv file and converted to json format in order to be transferred to a Neo4j database.
 
+<p align="center">
+  <img src="Img/context.JPG" width="650" title="Streamlit Application">
+</p>
+
 # Get Started 
 The use of venv is recommended for creating virtual environment with all necessary packages listed in `requirements.txt`
 
