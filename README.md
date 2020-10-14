@@ -1,5 +1,5 @@
 # Project 
-The aim of this project is to extract informations from PDF format scientific publications related to AAV virus (adeno-associated virus).
+The aim of this project is to extract informations from PDF format scientific publications related to **AAV virus (adeno-associated virus)**.
 
 Those informations are then incluted into a csv file and converted to json format in order to be transferred to a Neo4j database.
 
@@ -26,7 +26,8 @@ Those files contain informations (Metadata and AAV-related informations) about t
 
 
 # Streamlit PDF information extraction Application
-Run ` streamlit run extraction_info_pdf.py` to open a PDF information extraction tool. 
+
+Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corrsponding applicaiton) to open the PDF information extraction tool. 
 <p align="center">
   <img src="Img/capture_extraction_info_pdf_app.jpg" width="650" title="Streamlit Application">
 </p>
