@@ -136,10 +136,12 @@ t-Distributed Stochastic Neighbor Embedding (t-SNE) reduces dimensionality while
 
 Some clusters can immediately be detected, but many others are harder to separate. In order to help to visually separate different concentrations of topics, clusters found by k-means are used as labels. 
 
-Using t-SNE our high dimensional features vector  can be reduced to 2 dimensions.
+Using t-SNE our high dimensional features vector can be reduced to 2 dimensions.
 <p align="center">
   <img src="Img/t-sne_pubmed_kmeans.png" width="650" title="t-SNE">
 </p>
+
+### Top 10 words per cluster
 
 ## 6. Topic modeling
 
