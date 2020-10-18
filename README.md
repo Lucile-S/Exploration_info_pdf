@@ -90,8 +90,11 @@ Selected query topics are:
 - Tropism
 - Variant
 
+
 For each query topic a csv file was created to store the abstract and the metadata of each publications. 
 Those csv files can be find in the `Abstracts/` folder.
+
+Around 4800 abstracts were collected in total by running `publication_clustering/scraping_abstract_pubmed.py`
 
 ## 1. Preprocessing
 - Combine all csv files into a unique dataframe,
