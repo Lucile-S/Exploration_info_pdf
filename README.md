@@ -1,5 +1,5 @@
-# Project 
-The aim of this project is to extract informations from PDF format scientific publications related to **AAV virus (adeno-associated virus)**.
+# Project - Part 1 : PDF information extraction
+The aim of this project is to extract informations from PDF of research publications related to **AAV virus (adeno-associated virus)**.
 
 Those informations are then incluted into a csv file and converted to json format in order to be transferred to a **neo4j database**.
 
@@ -64,11 +64,20 @@ Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding applicat
 
 
 
-# Genomic Medicine Literature Clustering Clustering 
+#  Project - Part 2 : Genomic Medicine Literature Clustering Clustering 
+The aim of the second part of this project is to clustering similar research article abstracts together in order to see if it's possible to simplify the search for related publications. 
 
-## Fetch article abstracts 
+the steps for doing that are the following:
+1. fetch some abstracts,
+1. Preprocessing of each abstract,
+1. represent each abstracts as a vector,
+1. perform k-means clustering,
+1. perform t-SNE dimensionality reduction for visualization,
+1. and perform topic modelling to find the keywords of each cluster.
+
+## 1. Fetch publication abstracts 
 Publication abstracts from different Genomic Medicine related topics were downloaded using the Pubmed Api. 
-Selected query topics:
+Selected query topics are:
 - Adeno-Associated-Virus
 - Epigenetics
 - Gene Therapy
@@ -80,6 +89,19 @@ Selected query topics:
 - Transfection
 - Tropism
 - Variant
+
+For each query topic a csv file was created to store the abstract and the metadata of each publications. 
+Those csv files can be find in the `Abstracts/` folder.
+
+## 1. Preprocessing
+- Combine all csv files into a unique dataframe,
+- Remove duplicate and missing abstracts,
+- remove punctuaitons and stopwords,
+- tokenizing and lemmatize,
+- Save as `Processed_Abstracts.csv`
+
+## 1. Represent each abstracts as a vector
+Each abstract is transformed into a feature vector using Term Frequency–inverse Document Frequency (TF-IDF).
 
 
 
