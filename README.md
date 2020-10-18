@@ -138,3 +138,4 @@ For 12 query topics, the optical k determined was **14**.
 
 
 
+
