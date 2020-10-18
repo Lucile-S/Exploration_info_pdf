@@ -46,7 +46,7 @@ Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding applicat
 
 - Select a folder containing pdf files or select an unique pdf.
 - Indicate if you want to upload existing csv files (IDs_table.csv, Publication_Metadata.csv, Publication_Informations.csv) in order to add new data to them.
-- Choose to import json data to a Neo4j database by adding a configuration file (`neoj4_database.ini`).
+- Choose to import json data to a Neo4j database by adding a configuration file (`neoj4_database.ini`, file example in src/ folder).
 - Metadata (Title, Authors, DOI, PMID, PMCID, Keywords, Abstract, Journal, Year, Pdf Word Count) are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika), regex patterns and pubmed API.
 - AAV terms, frequency and their linked publication references are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika) and regex patterns
 - Retrieved informations are stored into csv files : 
