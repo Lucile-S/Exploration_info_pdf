@@ -64,4 +64,6 @@ Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding applicat
 
 
 
-# Script description :
+# Publication Clustering 
+
+
