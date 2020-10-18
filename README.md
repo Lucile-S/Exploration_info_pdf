@@ -111,14 +111,23 @@ The clustering was based off the TF-IDF matrix  where each row is a vector repre
 
 ## 1. K-means clustering
 The TF-IDF matrix was used as input for the k-means algorithm.
- Distortion computes the sum of squared distances from each point to its assigned center. When distortion is plotted against k there will be a k value after which decreases in distortion are minimal. This is the desired number of clusters.
 First, to determine the best k number of clusters, the silhouette score and the sum of squared distances from each point to its assigned center were computed at different k values.
-
-
 
 <p align="center">
   <img src="Img/Silhouette_Method_For_Optimal_k.png" width="650" title="How many clusters">
 </p>
+
+For 12 query topics, the optical k determined was **14**. 
+
+<p align="center">
+  <img src="Img/nb_of_publications_per_cluster.png" width="650" title="Nb of publications per cluster">
+</p>
+
+
+<p align="center">
+  <img src="Img/category_per_cluster.png" width="650" title="Category per cluster">
+</p>
+
 
 
 
