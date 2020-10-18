@@ -36,10 +36,10 @@ Those files contain informations (Metadata and AAV-related informations) about t
 
 Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding application) to open the PDF information extraction tool. 
 <p align="center">
-  <img src="Img/app_2.jpg" width="650" title="Streamlit Application">
+  <img src="Img/app_2.JPG" width="650">
 </p>
 <p align="center">
-  <img src="Img/app_3.jpg" width="650" title="Streamlit Application">
+  <img src="Img/app_3.JPG" width="650">
 </p>
 
 - Select a folder containing pdf files or select an unique pdf.
