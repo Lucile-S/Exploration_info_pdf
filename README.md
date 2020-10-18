@@ -117,7 +117,7 @@ First, to determine the best k number of clusters, the silhouette score and the 
 
 
 <p align="center">
-  <img src="Img/.jpg" width="650" title="How many clusters">
+  <img src="Img/Silhouette_Method_For_Optimal_k.png" width="650" title="How many clusters">
 </p>
 
 
