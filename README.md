@@ -94,7 +94,7 @@ Selected query topics are:
 For each query topic a csv file was created to store the abstract and the metadata of each publications. 
 Those csv files can be find in the `Abstracts/` folder.
 
-Around 4800 abstracts were collected in total by running `publication_clustering/scraping_abstract_pubmed.py`
+Around 4800 abstracts were collected in total by running `Publication_clustering/scraping_abstract_pubmed.py`.
 
 ## 1. Preprocessing
 - Combine all csv files into a unique dataframe,
@@ -102,6 +102,8 @@ Around 4800 abstracts were collected in total by running `publication_clustering
 - remove punctuaitons and stopwords,
 - tokenizing and lemmatize,
 - Save as `Processed_Abstracts.csv`
+
+The preprocessing was performed by running `Publication_clustering/data_processing.py`.
 
 ## 1. Represent each abstracts as a vector
 Each abstract is transformed into a feature vector using Term Frequency–inverse Document Frequency (TF-IDF).
