@@ -120,12 +120,12 @@ First, to determine the best k number of clusters, the silhouette score and the 
 For 12 query topics, the optical k determined was **14**. 
 
 <p align="center">
-  <img src="Img/nb_of_publications_per_cluster.png" width="650" title="Nb of publications per cluster">
+  <img src="Img/nb_of_publications_per_cluster_14.png" width="650" title="Nb of publications per cluster">
 </p>
 
 
 <p align="center">
-  <img src="Img/category_per_cluster.png" width="650" title="Category per cluster">
+  <img src="Img/category_per_cluster_14.png" width="650" title="Category per cluster">
 </p>
 
 
