@@ -38,6 +38,8 @@ Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding applicat
 <p align="center">
   <img src="Img/app_2.JPG" width="650">
 </p>
+
+
 <p align="center">
   <img src="Img/app_3.JPG" width="650">
 </p>
