@@ -32,24 +32,26 @@ Run `run pdf_infos.py` script will create:
 Those files contain informations (Metadata and AAV-related informations) about the pdf files present in the ./publications folder.
 
 
-# Streamlit PDF information extraction Application
+# Streamlit PDF Information Extraction Application
 
-Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corrsponding application) to open the PDF information extraction tool. 
+Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding application) to open the PDF information extraction tool. 
 <p align="center">
   <img src="Img/capture_extraction_info_pdf_app.jpg" width="650" title="Streamlit Application">
 </p>
 
-- Upload a publication in pdf format or select a folder containing pdf files.
-- Indicate if you want to upload existing csv files (see below) in order to add new data to them.
+- Select a folder containing pdf files or select an unique pdf.
+- Indicate if you want to upload existing csv files (IDs_table.csv, Publication_Metadata.csv, Publication_Informations.csv) in order to add new data to them.
+- Choose to import json data to a Neo4j database by adding a configuration file (`neoj4_database.ini`).
 - Metadata (Title, Authors, DOI, PMID, PMCID, Keywords, Abstract, Journal, Year, Pdf Word Count) are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika), regex patterns and pubmed API.
-- AAV terms, frequency and linked publication references are retrieved
-- Retrieved informations are stored into those csv files : 
+- AAV terms, frequency and their linked publication references are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika) and regex patterns
+- Retrieved informations are stored into csv files : 
   - IDs_table.csv, 
   - Publication_Metadata.csv,
-  - and Publication_Informations.csv,
-- Json files are generated from csv files 
+  - and Publication_Informations.csv.
+- Json files are generated from those csv files.
 - Csv and json files are saved into the extraction_info_pdf_output/ folder
-- Choose to import json data to a Neo4j database by adding a configuration file (`neoj4_database.ini`).
+- Data are pushed to Neo4j. 
+
 
 <p align="center">
   <img src="Img/capture_Neo4j_test_example.jpg" width="650" title="Neo4j Example">
