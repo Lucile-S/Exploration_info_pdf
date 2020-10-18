@@ -92,7 +92,7 @@ Selected query topics are:
 
 
 For each query topic a csv file was created to store the abstract and the metadata of each publications. 
-Those csv files can be find in the ``Publication_clustering/Abstracts/` folder.
+Those csv files can be find in the `Abstracts/` folder.
 
 Around 4800 abstracts were collected in total by running `Publication_clustering/scraping_abstract_pubmed.py`.
 
@@ -106,7 +106,23 @@ Around 4800 abstracts were collected in total by running `Publication_clustering
 The preprocessing was performed by running `Publication_clustering/data_processing.py`.
 
 ## 1. Represent each abstracts as a vector
-Each abstract was transformed into a feature vector using Term Frequency–inverse Document Frequency (TF-IDF).
+Each abstract was transformed into a feature vector using Term Frequency–inverse Document Frequency (TF-IDF). TF-IDF evaluates how relevant a word is to a document in a collection of documents.
+The clustering was based off the TF-IDF matrix  where each row is a vector representation of a publication abstract. The maximum number of features was limited to the top 512 features.
+
+## 1. K-means clustering
+The TF-IDF matrix was used as input for the k-means algorithm.
+ Distortion computes the sum of squared distances from each point to its assigned center. When distortion is plotted against k there will be a k value after which decreases in distortion are minimal. This is the desired number of clusters.
+First, to determine the best k number of clusters, the silhouette score and the sum of squared distances from each point to its assigned center were computed at different k values.
+
+
+
+<p align="center">
+  <img src="Img/.jpg" width="650" title="How many clusters">
+</p>
+
+
+
+
 
 
 
