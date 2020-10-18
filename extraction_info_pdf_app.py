@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 #extraction_info_pdf_app.py
 
@@ -8,9 +9,9 @@ from pubmed import *
 from utils import *
 from csv_to_json import *
 from text_mining import *
-from Neo4j import *
-import configparser
+from Neo4j_import import *
 
+import io
 # Api package 
 import streamlit as st
 
@@ -24,9 +25,14 @@ import glob
 from  collections import Counter
 from pathlib import Path
 import time
+import configparser
 
 # log file
 import logging
+
+#------------------------------------------------#
+#                   Setting                      #
+#------------------------------------------------#
 
 def display_app_header(main_txt,sub_txt,is_sidebar = False):
     """
@@ -60,16 +66,17 @@ def display_header(header):
     html_temp = f"""<h4 style = "color:grey;text_align:center;"> {header} </h5>"""
     st.markdown(html_temp, unsafe_allow_html = True)
 
-
 # page setting
-display_app_header(main_txt='AAV-related PDF Information Extraction Tool',sub_txt='Find pdf Metadata and AAV terms and store the information retrieved to csv and json files : "IDs_table", "Publication_Metadata" and "Publication_Informations"')
+display_app_header(main_txt='AAV-related PDF Information Extraction Tool',sub_txt='Find pdf Metadata and AAV terms. Store the informations retrieved to csv and json files : "IDs_table", "Publication_Metadata" and "Publication_Informations"')
 st.set_option('deprecation.showfileUploaderEncoding', False)
-
 
 # get the current directory 
 dir = os.getcwd()
 #pdf_dir = os.path.join(dir, './publications')
 
+#------------------------------------------------#
+#                   Selectors                   #
+#------------------------------------------------#
 
 def folder_selector(dir):
     st.sidebar.title('PDF Selector')
@@ -90,6 +97,20 @@ def folder_selector(dir):
     st.sidebar.write('The folder selected is :', selected_dir_path)
     return selected_dir_path
 
+def file_selector(dir):
+    files = glob.glob(dir + '/**/*.pdf', recursive=True)
+    options = ['<selected>']
+    #select_box_options += set([os.path.basename(file) for file in files])
+    options += list(set([file for file in files]))
+    filename_maker = lambda file_path: os.path.basename(file_path)
+    select_box_options = list(map(filename_maker, options))
+    selected_file = st.sidebar.selectbox('Select a pdf file', select_box_options, 0)
+    selected_file_idx = select_box_options.index(selected_file)
+    selected_file_path = options[selected_file_idx]
+    st.sidebar.write('The pdf selected is :', selected_file)
+    return selected_file_path
+
+
 def upload_single_pdf(folder_path='.'):
     uploaded_pdf = st.sidebar.file_uploader('...or choose a pdf file to upload', type="pdf", key=0)
     #st.sidebar.write('The pdf uploaded is :', uploaded_pdf)
@@ -97,19 +118,19 @@ def upload_single_pdf(folder_path='.'):
 
 def IDs_table_selector(folder_path='.'):
     st.sidebar.title('IDs Table Selector')
-    uploaded_IDs_table = st.sidebar.file_uploader('If you have already an IDs correspondance table "IDs_table.csv" in which you would like to add to add new publication into, select it:', type=["csv","xlsx"], key=1)
+    uploaded_IDs_table = st.sidebar.file_uploader('If you have already an IDs correspondance table "IDs_table.csv" in which you would like  to add new publication(s) into, select it:', type=["csv","xlsx"], key=1)
     #st.sidebar.write('The IDs table uploaded is :', uploaded_IDs_table)
     return uploaded_IDs_table
 
 def df_selector(folder_path='.'):
     st.sidebar.title('Publication Metadata file Selector')
-    uploaded_df = st.sidebar.file_uploader('If you have already a "Publication_Metadata.csv" file in which you would like to add new publication into, select it:', type=["csv","xlsx"], key=2)
+    uploaded_df = st.sidebar.file_uploader('If you have already a "Publication_Metadata.csv" file in which you would like to add new publication(s) into, select it:', type=["csv","xlsx"], key=2)
     #st.sidebar.write('The Publication Infos file uploaded is :', uploaded_df)
     return uploaded_df
 
 def AAV_df_selector(folder_path='.'):
     st.sidebar.title('Publication Infos file Selector')
-    uploaded_df_AAV = st.sidebar.file_uploader('If you have already a "Publication_Informations.csv" in which you would like to new publication into, select it:', type=["csv","xlsx"], key=2)
+    uploaded_df_AAV = st.sidebar.file_uploader('If you have already a "Publication_Informations.csv" in which you would like to add new publication(s) into, select it:', type=["csv","xlsx"], key=2)
     #st.sidebar.write('The Publication Infos file uploaded is :', uploaded_df)
     return uploaded_df_AAV
 
@@ -117,12 +138,11 @@ def neo4j_selector(folder_path='.'):
     st.sidebar.title('Neo4j Database')
     st.sidebar.write('Do you want to import the json-formatted data to your Neoj4 Database?')
     yes = st.sidebar.checkbox('Yes',value = False)
-    if yes  :
-        neo4j_config = st.sidebar.file_uploader('Please upload your database configuration file', type=["py"], key=3)
-    else :
-        neo4j_config = None
-    return neo4j_config
-
+    uploaded_cfg = None
+    if yes :
+        uploaded_cfg = st.sidebar.file_uploader('Please upload your database configuration file .ini', type=["ini","py"], key=3)  
+        #st.write('You selected `%s`' % uploaded_cfg)
+    return uploaded_cfg
 
 def save_file(IDs_table,df,AAV_df, save_dir):
     #save csv files
@@ -130,7 +150,7 @@ def save_file(IDs_table,df,AAV_df, save_dir):
     csv_name_Infos = 'Publication_Informations'
     #save_dir = pdf_dir + '/../'
     # save dataframes as csv files  #
-    #df.drop(['PMID','PMCID'], axis=1, errors='ignore') # remove those columns if exist  before saving
+    #df.drop(['PMID','PMCID'], axis=1, errors='ignore') # remove those columns if exist & before saving
     df.to_csv(save_dir + csv_name_Metadata + '.csv', index=False)
     IDs_table.to_csv(save_dir+'IDs_table.csv', index=False)
     AAV_df.to_csv( save_dir + csv_name_Infos + '.csv', index=False)
@@ -155,7 +175,6 @@ def convert_and_save_to_json(df,AAV_df, save_dir):
     save_to_json(AAV_df,json_output_2)
 
 
-
 def extract_info(pdf_path, seq_id=1): 
     #-------------------#
     # Publi_ID creation #
@@ -164,8 +183,6 @@ def extract_info(pdf_path, seq_id=1):
     
     #---------------------------------------------------------------------------------------------------------------#
     #  Metadata retrieve from the pdf - Authors, Title, Journal, Year, Abstract, Keywords, Journal, Pages, doi      #    
-    #---------------------------------------------------------------------------------------------------------------#
-    #------------------------------------------------------------------------------------------------------#
     #  Metadata from pubmed  : Authors, Title, Journal, Year, Abstract, Keywords, Journal, Pages, doi      #    
     #------------------------------------------------------------------------------------------------------#
     
@@ -205,7 +222,7 @@ def extract_info(pdf_path, seq_id=1):
 
     # Checking 
     # print("----PUBMED METADATA-----")
-    # print(METADATA)
+    # print(METADATA)s
     # print("----NEXT PUBLI-----")
 
     #-------------------#
@@ -247,11 +264,12 @@ def extract_info(pdf_path, seq_id=1):
         except:
             related_references = find_AAV_term_related_publications(splitted_text ,AAV_term)
 
-        # get the list of all AAV-related publication references  find in the publication to the METADATA dictionnary 
+        # get the list of all AAV-related publication references find in the publication to the METADATA dictionnary 
         Linked_references += related_references
         # store into a dictionnary 
-        #AAV_term_dict = {'Linked_references': Linked_references, 'AAV_term':AAV_term ,'AAV_term_count': AAV_count, 'Frequency_AAV_term':Frequency, 'Linked_AAV_references': related_references}
+
         AAV_term_dict = {'AAV_term':AAV_term ,'AAV_term_count': AAV_count, 'Frequency_AAV_term':Frequency, 'Linked_AAV_references': related_references}
+        
         # Combine the 2 dictionnaries and add to a list
         AAV_data.append({**METADATA, **AAV_term_dict})
     METADATA['Linked_references']=Linked_references
@@ -262,17 +280,18 @@ def extract_info(pdf_path, seq_id=1):
     return METADATA, AAV_data, IDs
 
 
-
 #####################################################################
-#                     Streamlit main code                           #
+#                     Streamlit main Flow                           #
 #####################################################################
 
-selected_dir_path=folder_selector(dir=os.getcwd())
-uploaded_pdf=upload_single_pdf()
+selected_dir_path=folder_selector(os.getcwd())
+selected_pdf_path=file_selector(os.getcwd())
 uploaded_IDs_table = IDs_table_selector()
 uploaded_df = df_selector()
 uploaded_AAV_df = AAV_df_selector()
-cfg = neo4j_selector()
+uploaded_cfg = neo4j_selector()
+button_selection = st.button('Valid selection')
+
 
 ## output directory 
 dir = os.getcwd()
@@ -280,14 +299,11 @@ save_dir = os.path.join(dir, 'extraction_info_pdf_output/')
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
-
-
 ## Log file 
 LOG_FILENAME = "extraction_info_pdf.log"
-log_path =os.path.join(save_dir, LOG_FILENAME)
-logging.basicConfig(filename=log_path, level=logging.INFO)
+log_path =os.path.join(save_dir,'log', LOG_FILENAME)
+logging.basicConfig(filename='/home/lucile/WhiteLab_project/Extraction_info_pdf/extraction_info_pdf_output/log/test.log', filemode="w", level=logging.INFO)
 logging.getLogger('pdfminer').setLevel(logging.ERROR)
-
 
 # ID TABLE 
 if uploaded_IDs_table is not None:
@@ -304,7 +320,6 @@ if uploaded_df is not None:
 else:
     df = pd.DataFrame(columns = df_column_names)
 
-
 # AAV_df 
 AAV_df_column_names = ['Publi_ID', 'Year', 'Authors', 'Title', 'Journal', 'DOI','PMID','PMCID', 'Keywords','Pages','Abstract', 'Total_word_count','AAV_count','Frequency','AAV_terms','AAV_term','AAV_term_count','Frequency_AAV_term', 'Linked_AAV_references']
 if uploaded_AAV_df is not None:
@@ -313,7 +328,7 @@ if uploaded_AAV_df is not None:
 else:
     AAV_df = pd.DataFrame(columns = AAV_df_column_names)
 
-# intermediaire storage 
+# intermediate storage 
 AAV_data = []
 AAV_dict = {}
 
@@ -327,24 +342,37 @@ else :
 #       INFOS           #
 #-----------------------#
 
-if selected_dir_path != '<selected>':
-    pdf_paths = glob.glob(selected_dir_path +'/*.pdf')
+if button_selection:
+
+    # progression bar 
+    my_bar = st.progress(0)
+        
+    # If path folder selected
+    if os.path.basename(selected_dir_path) != '<selected>':
+        pdf_paths = glob.glob(selected_dir_path +'/*.pdf')
+        # loop over pdf files  to get their names
+        File_names = [os.path.basename(pdf_path) for pdf_path in pdf_paths]
+    
+    # If unique pdf file uploaded
+    if os.path.basename(selected_pdf_path) != '<selected>':
+        pdf_paths  = [selected_pdf_path]
+        File_names = [os.path.basename(selected_pdf_path)]
 
     # loop over pdf files 
-    for pdf_path in pdf_paths:
+    for pdf_path, i in zip(pdf_paths, range(0,len(pdf_paths))):
+        File_name = File_names[i]
         st.subheader("PDF file uploaded :")
-        File_name = os.path.basename(pdf_path)
         st.write(f'<font color=green>{File_name}</font>', unsafe_allow_html=True)
 
+        # If the file already in IDs_table don't add it 
         if File_name in IDs_table['PDF_name'].values:
             st.write(f'Informations already extracted for this publication: {File_name}')
             logging.info(f'Informations already extracted for this publication: {File_name}')
 
             #st.write(f" DOI: {IDs_table['DOI']} ; PMID: {IDs_table['PMID']} ; PMCID: {IDs_table['PMCID']}")
             logging.info('-----------NEXT PUBLICATION---------------------')
-            st.write('-------------NEXT PUBLICATION------------------')
+            st.write('**-------------NEXT PUBLICATION------------------**')
         else : 
-    
             st.subheader("Fetching and collectiong PDF metadata and AAV informations ...")
             METADATA, AAV_data, IDs =  extract_info(pdf_path, seq_id)
             Title =  METADATA['Title']
@@ -360,6 +388,9 @@ if selected_dir_path != '<selected>':
             seq_id += 1
             st.write('**--------------------NEXT PUBLICATION---------------------**')
             logging.info('-----------NEXT PUBLICATION---------------------')
+            time.sleep(0.1)
+            my_bar.progress(int((1+i)*100/len(pdf_paths)))
+    st.write('**---------------------SAVING--------------------------**')
     logging.info('--------------------Saving---------------------------')
 
 
@@ -381,114 +412,41 @@ if selected_dir_path != '<selected>':
         st.write(df.head())
         st.write('-- Publication Informations --')
         st.write(AAV_df.head())
-    logging.info('csv and json files saved in {save_dir}')
+    logging.info(f'csv and json files saved in {save_dir}')
 
     ########################
     #    Push to Neo4j     #
     ########################
-    if cfg: 
-        # define paths
-        json_dir = save_dir
-        # json file list
-        json_paths = glob.glob(json_dir+'/*json')
-        # Create an instance of connection with the parameters defined before.
+    if uploaded_cfg : 
+        st.write('**---------------------Neo4j--------------------------**')
+
         # parameters
         config = configparser.ConfigParser()
-        config.read(cfg)
+        config.read_string(uploaded_cfg.getvalue())
         uri  = config['myneo4j']['uri']
-        user = config['myneo4j']['user']
-        pwd = config['myneo4j']['passwd']
-        conn = Neo4jConnection(uri=uri, user=user, pwd=pwd)
-        # Create a query  : import json file and create nodes labeled as <label>
-        labels_dict={'IDs_table.json':AAVPublicationID,'Publications_Metadata.json':AAVPublication,'Publication_Informations.json':AAVvariantPublication}
-        for json_path in json_paths:
-            file_name = os.path.basename(json_path)
-            label = labels_dict[file_name]
-            # import data to neo4j
-            import_json(json_path, label)
+        user =  config['myneo4j']['user']
+        pwd =  config['myneo4j']['passwd']
+        print(uri, user, pwd)
 
-
-if uploaded_pdf != None:
-    st.header("PDF files uploaded : ")
-    st.write(f'<font color=green>{uploaded_pdf}</font>', unsafe_allow_html=True)
-    logging.info("PDF files uploaded :{uploaded_pdf} ")
-    if File_name in IDs_table['PDF_name'].values:
-        st.write(f'Informations already extracted for this publication: {File_name}')
-        logging.info(f'Informations already extracted for this publication: {File_name}')
-        #st.write(f" DOI: {IDs_table['DOI']} ; PMID: {IDs_table['PMID']} ; PMCID: {IDs_table['PMCID']}")
-    else : 
-        st.write(f'{File_name}')
-        logging.info("PDF files uploaded :{uploaded_pdf} ")
-        st.subheader("fetching and collectiong PDF metadata and AAV informations ...")
-        logging.info('Information extraction : Metadata and AAV-related data')
-        METADATA, AAV_data, IDs =  extract_info(pdf_path, seq_id)
-        Title =  METADATA['Title']
-        st.write(f'Title : {Title}')
-        #st.write(f" DOI: {METADATA['DOI']} ; IDs_table: {METADATA['PMID']} ; PMCID: {METADATA['PMCID']}")
-        # Dataframe filling (add dictonnary as  row to dataframe)
-        df = df.append(METADATA, ignore_index=True)
-        IDs_table  = IDs_table.append(IDs,ignore_index=True)
-        AAV_df = AAV_df.append(AAV_data, ignore_index=True)
-        seq_id += 1
-        st.write('-----------NEXT PUBLICATION-----------------')
-        #save csv files
-        st.subheader('Save to csv and convert to json...')
-        save_file(IDs_table,df,AAV_df, save_dir)
-        # Convert  to json
-        convert_and_save_to_json(df,AAV_df, save_dir)
-        st.write('Done!')
-        logging.info('csv and json files saved in {save_dir}')
-        # checking
-        st.subheader('Quick view of the files')
-        st.write('-- IDs table --')
-        st.write(IDs_table.head())
-        st.write('-- Publication Metadata --')
-        st.write(df.head())
-        st.write('-- Publication Informations --')
-        st.write(AAV_df.head())
-
-            #-------------------------------#
-    # save dataframes as csv files  #
-    #     and convert to json       #
-    #-------------------------------#
-    
-    if df.empty == False :   
-        st.subheader('Save to csv and convert to json...')
-        save_file(IDs_table,df,AAV_df, save_dir)
-        convert_and_save_to_json(df, AAV_df, save_dir)  
-        st.write('Done!')
-        # checking
-        st.subheader('Quick view of the files')
-        st.write('-- IDs table --')
-        st.write(IDs_table.head())
-        st.write('-- Publication Metadata --')
-        st.write(df.head())
-        st.write('-- Publication Informations --')
-        st.write(AAV_df.head())
-    logging.info('csv and json files saved in {save_dir}')
-
-    ########################
-    #    Push to Neo4j     #
-    ########################
-    if cfg: 
         # define paths
         json_dir = save_dir
         # json file list
         json_paths = glob.glob(json_dir+'/*json')
+ 
+
         # Create an instance of connection with the parameters defined before.
-        # parameters
-        uri = cfg.myneo4j["uri"]
-        user = cfg.myneo4j["user"]
-        pwd =  cfg.myneo4j["passwd"]
-        role = cfg.myneo4j["role"]
         conn = Neo4jConnection(uri=uri, user=user, pwd=pwd)
         # Create a query  : import json file and create nodes labeled as <label>
-        labels_dict={'IDs_table.json':AAVPublicationID,'Publications_Metadata.json':AAVPublication,'Publication_Informations.json':AAVvariantPublication}
+        labels_dict={'IDs_table.json':'AAVPublicationID','Publication_Metadata.json':'AAVPublication','Publication_Informations.json':'AAVvariantPublication'}
+        # loop over json files 
         for json_path in json_paths:
+            print(json_path)
             file_name = os.path.basename(json_path)
+            print(file_name)
             label = labels_dict[file_name]
             # import data to neo4j
-            import_json(json_path, label)
+            status = import_json(conn, json_path, label)
+            st.write(status)
 
 
 
