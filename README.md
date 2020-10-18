@@ -64,6 +64,25 @@ Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding applicat
 
 
 
-# Publication Clustering 
+# Genomic Medicine Literature Clustering Clustering 
+
+## Fetch article abstracts 
+Publication abstracts from different Genomic Medicine related topics were downloaded using the Pubmed Api. 
+Selected query topics:
+- Adeno-Associated-Virus
+- Epigenetics
+- Gene Therapy
+- Genome Engineering
+- Immunology
+- Post-Translational Modification
+- Regulatory Element
+- Sequence
+- Transfection
+- Tropism
+- Variant
+
+
+
+
 
 
