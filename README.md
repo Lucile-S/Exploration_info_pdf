@@ -178,15 +178,18 @@ Run `streamlit run Article_clustering_app.py` (Article_clustering.py correspondi
   <img src="Img/app2_2.JPG" width="650">
 </p>
 
+- Top 10 words per cluster is displayed 
 - t-SNE dimensionality reduction is performed
+- LDA is performed on a selected cluster and with a number of topics chosen by the user
+
 <p align="center">
   <img src="Img/tsne_app.JPG" width="850">
 </p>
-- Top 10 words per cluster is displayed 
+
 <p align="center">
   <img src="Img/word_app.JPG" width="850">
 </p>
-- LDA is performed on a selected cluster and with a number of topics chosen by the user
+
 <p align="center">
   <img src="Img/app2_4.JPG" width="850">
 </p>
