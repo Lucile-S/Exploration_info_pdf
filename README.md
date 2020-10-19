@@ -149,8 +149,8 @@ For each cluster, the top keywords was printed out based on their TFIDF score by
 Also, a word cloud was created using the wordclouda and PIL packages.
 
 <p align="left">
-  <img src="Img/top_word.JPG" width="350" title="t-SNE">
-  <img src="Img/top_word_2.JPG" width="350" title="t-SNE">
+  <img src="Img/top_word.JPG" width="350" height="500" title="t-SNE">
+  <img src="Img/top_word_2.JPG" width="350" height="500" title="t-SNE">
 </p>
 
 Other interesting approaches is to use LDA topic modeling.
