@@ -161,7 +161,7 @@ A Latent Dirichlet Allocation - LDA model was instantiated using Gensim. With LD
 Visualiazation was made using the pyLDAvis interactive LDA visualization tool. 
 
 <p align="center">
-  <img src="Img/pyLDA.JPG" width="350" title="t-SNE">
+  <img src="Img/pyLDA.JPG" width="850" title="t-SNE">
 </p>
 
 
