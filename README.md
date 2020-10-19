@@ -141,16 +141,16 @@ Some clusters can immediately be detected, but many others are harder to separat
 
 Using t-SNE our high dimensional features vector can be reduced to 2 dimensions.
 <p align="center">
-  <img src="Img/t-sne_pubmed_kmeans.png" width="650" title="t-SNE">
+  <img src="Img/t-sne_pubmed_kmeans.png" width="850" title="t-SNE">
 </p>
 
 ### Top 10 words per cluster
 For each cluster, the top keywords was printed out based on their TFIDF score by computing and sorting the average value across a TFIDF dataframe grouped by the cluster label. 
 Also, a word cloud was created using the wordclouda and PIL packages.
 
-<p align="left">
-  <img src="Img/top_word.JPG" width="350" height="500" title="t-SNE">
-  <img src="Img/top_word_2.JPG" width="350" height="500" title="t-SNE">
+<p align="center">
+  <img src="Img/top_word.JPG" width="350" height="700" title="t-SNE">
+  <img src="Img/top_word_2.JPG" width="350" height="700" title="t-SNE">
 </p>
 
 Other interesting approaches is to use LDA topic modeling.
@@ -163,7 +163,6 @@ Visualiazation was made using the pyLDAvis interactive LDA visualization tool.
 <p align="center">
   <img src="Img/pyLDA.JPG" width="350" title="t-SNE">
 </p>
-
 
 
 ## Streamlit Genomic Medicine Literature Clustering and Topic Modeling Application
