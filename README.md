@@ -161,7 +161,7 @@ For a giving cluster, a LDA model was instantiated using Gensim. With LDA, each 
 Visualiazation was made using the pyLDAvis interactive LDA visualization tool. 
 
 <p align="center">
-  <img src="Img/pyLDA.JPG" width="850" title="t-SNE">
+  <img src="Img/pyLDA.JPG" width="850" title="pyLDAvis">
 </p>
 
 
@@ -177,23 +177,20 @@ Run `streamlit run Article_clustering_app.py` (Article_clustering.py correspondi
   <img src="Img/app2_2.JPG" width="650">
 </p>
 
-- Select .
-- Indicate if you want to upload existing csv files (IDs_table.csv, Publication_Metadata.csv, Publication_Informations.csv) in order to add new data to them.
-- Choose to import json data to a Neo4j database by adding a configuration file (`neoj4_database.ini`, file example in src/ folder).
-- Metadata (Title, Authors, DOI, PMID, PMCID, Keywords, Abstract, Journal, Year, Pdf Word Count) are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika), regex patterns and pubmed API.
-- AAV terms, frequency and their linked publication references are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika) and regex patterns
-- Retrieved informations are stored into csv files : 
-  - IDs_table.csv, 
-  - Publication_Metadata.csv,
-  - and Publication_Informations.csv.
-- Json files are generated from those csv files.
-- Csv and json files are saved into the extraction_info_pdf_output/ folder
-- Data are pushed to Neo4j. 
-
-
+- Select publication categories among query topics mentioned above.
+- The script runs a K-means clustering. The optimal number of clusters is determined by the Silhouette score method.
 <p align="center">
-  <img src="Img/capture_Neo4j_test_example.jpg" width="650" title="Neo4j Example">
+  <img src="Img/app2_1.JPG" width="650">
 </p>
+<p align="center">
+  <img src="Img/app2_2.JPG" width="650">
+</p>
+
+
+- t-SNE dimensionality reduction is performed
+- Top 10 words per cluster is displayed 
+- LDA is performed on a selected cluster and with a number of topics chosen by the user
+
 
 
 
