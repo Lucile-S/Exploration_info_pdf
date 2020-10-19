@@ -128,8 +128,8 @@ Then, K-means was run with that number of clusters. The K-means clustering and n
 
 ### Number of publications and Category distribution per cluster
 <p align="left">
-  <img src="Img/nb_of_publications_per_cluster_14.png" width="500" title="Nb of publications per cluster">
-  <img src="Img/category_per_cluster_14.png" width="500" title="Category per cluster">
+  <img src="Img/nb_of_publications_per_cluster_14.png" width="400" title="Nb of publications per cluster">
+  <img src="Img/category_per_cluster_14.png" width="400" title="Category per cluster">
 </p>
 
 
@@ -155,8 +155,8 @@ Also, a word cloud was created using the wordclouda and PIL packages.
 
 Other interesting approaches is to use LDA topic modeling.
 
-## 6. Topic modeling
-A Latent Dirichlet Allocation - LDA model was instantiated using Gensim. With LDA, each document is described by a distribution of topics and each topic is described by a distribution of words.
+## 6. Topic modeling : Latent Dirichlet Allocation - LDA
+For a giving cluster, a LDA model was instantiated using Gensim. With LDA, each document is described by a distribution of topics and each topic is described by a distribution of words.
 
 Visualiazation was made using the pyLDAvis interactive LDA visualization tool. 
 
