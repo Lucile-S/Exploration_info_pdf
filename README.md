@@ -126,14 +126,10 @@ For 12 query topics, the optical k determined was **14**.
 
 Then, K-means was run with that number of clusters. The K-means clustering and next steps were performed by running `Publication_clustering/clustering.py`.
 
-### Number of publications per cluster
-<p align="center">
-  <img src="Img/nb_of_publications_per_cluster_14.png" width="650" title="Nb of publications per cluster">
-</p>
-
-### Category distribution per cluster
-<p align="center">
-  <img src="Img/category_per_cluster_14.png" width="650" title="Category per cluster">
+### Number of publications and Category distribution per cluster
+<p align="left">
+  <img src="Img/nb_of_publications_per_cluster_14.png" width="550" title="Nb of publications per cluster">
+  <img src="Img/category_per_cluster_14.png" width="550" title="Category per cluster">
 </p>
 
 
