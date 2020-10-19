@@ -152,10 +152,8 @@ Using t-SNE our high dimensional features vector can be reduced to 2 dimensions.
 For each cluster, the top keywords was printed out based on their TFIDF score by computing and sorting the average value across a TFIDF dataframe grouped by the cluster label. 
 Also, a word cloud was created using the wordclouda and PIL packages.
 
-<p align="center">
+<p align="left">
   <img src="Img/top_word.JPG" width="350" title="t-SNE">
-</p>
-<p align="center">
   <img src="Img/top_word_2.JPG" width="350" title="t-SNE">
 </p>
 
