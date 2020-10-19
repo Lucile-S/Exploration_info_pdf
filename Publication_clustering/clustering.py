@@ -46,6 +46,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 import joblib # to save model
 
+#TSNE
+from sklearn.manifold import TSNE
+
 # word cloud
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
@@ -168,6 +171,33 @@ def get_top_keywords(tfidf_matrix, clusters, vocabulary, n_terms):
     plt.imshow(wordcloud)
     plt.axis("off")
     plt.show()
+    
+def LDA_model(vectorized_data, num_topics=20):
+        # Create Dictionnary
+        texts = [text.split() for text in vectorized_data]
+        id2word = corpora.Dictionary(texts)
+        #remove extremes (similar to the min/max df step used when creating the tf-idf matrix)
+        id2word.filter_extremes(no_below=1, no_above=0.8)
+        # Term Document Frequency
+        corpus = [id2word.doc2bow(text) for text in texts]
+        # Model
+        lda_model = models.LdaModel(corpus, num_topics=num_topics, 
+                        id2word=id2word, 
+                        update_every=1, 
+                        chunksize=100, 
+                        passes=10,
+                        random_state =0,
+                        per_word_topics=True)
+      
+        topics_per_cluster =  lda_model.show_topics(formatted=False, num_words=20)
+        All_topics =[]
+        for idx, topic in enumerate(topics_per_cluster):
+            print('Topic: {} \nWords: {}'.format(idx, '|'.join([w[0] for w in topic[1]])))
+            All_topics.append([w[0] for w in topic[1]])
+            print('----next topic-----')
+   
+        vis = pyLDAvis.gensim.prepare(lda_model,corpus, id2word)
+        pyLDAvis.show(vis)
 
 #-----------------------------------------------------------#
 #                            MAIN                           #
@@ -273,8 +303,7 @@ if __name__ == "__main__":
     It is mostly used for visualization, in particular to visualize clusters 
     of instances in high-dimensional space
     """
-    from sklearn.manifold import TSNE
-
+ 
     tsne = TSNE(verbose=1, perplexity=100, random_state=0)
     X_embedded = tsne.fit_transform(X.toarray())
 
@@ -287,7 +316,6 @@ if __name__ == "__main__":
     plt.savefig(model_dir + "t-sne_pubmed_kmeans.png")
     plt.show()
     plt.close()
-    
     
     #-----------------------------------------------------------#
     #                   Top 10  words per cluster               #
@@ -303,46 +331,15 @@ if __name__ == "__main__":
     For topic modeling => Latent Dirichlet Allocation
     In LDA, each document can be described by a distribution of topics
     and each topic can be described by a distribution of words.
-    """
 
-    """
     Gensim creates a unique id for each word in the document.
     The produced corpus  is a mapping of (word_id, word_frequency).
     For example, (0, 2) below implies, word id 0 occurs twice in the first document. 
     """
 
     #vectorized_data = df['Processed_abstract'].tolist()
-    def LDA_model(vectorized_data, num_topics=20):
-        # Create Dictionnary
-        texts = [text.split() for text in vectorized_data]
-        id2word = corpora.Dictionary(texts)
-        #remove extremes (similar to the min/max df step used when creating the tf-idf matrix)
-        id2word.filter_extremes(no_below=1, no_above=0.8)
-        # Term Document Frequency
-        corpus = [id2word.doc2bow(text) for text in texts]
-        # quick view 
-        #print(corpus[:1])
-        # Model
-        lda_model = models.LdaModel(corpus, num_topics=num_topics, 
-                        id2word=id2word, 
-                        update_every=1, 
-                        chunksize=100, 
-                        passes=10,
-                        random_state =0,
-                        per_word_topics=True)
-      
-        topics_per_cluster =  lda_model.show_topics(formatted=False, num_words=20)
-        All_topics =[]
-        for idx, topic in enumerate(topics_per_cluster):
-            print('Topic: {} \nWords: {}'.format(idx, '|'.join([w[0] for w in topic[1]])))
-            All_topics.append([w[0] for w in topic[1]])
-            print('----next topic-----')
-   
-        vis = pyLDAvis.gensim.prepare(lda_model,corpus, id2word)
-        pyLDAvis.show(vis)
-
     LDA_model(df.loc[df['Cluster'] == 6]['Processed_abstract'].tolist(), 3)
 
-## pyLDAvis.show(vis) # open a server: http://127.0.0.1:8891/  
+## pyLDAvis.show(vis) : open a server: http://127.0.0.1:8891/  
  
                 
