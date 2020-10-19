@@ -51,20 +51,12 @@ from gensim.models import TfidfModel
 import pyLDAvis
 import pyLDAvis.gensim
 
-
-
-
-
 warnings.filterwarnings("ignore",category=DeprecationWarning)
 
- 
 # visualization settings
 fontsize = 8
-# plt.rc('xtick',labelsize=3)
-# plt.rc('ytick',labelsize=3)
 sns.set_context("paper", rc={'figure.figsize':(1,1),'legend.fontsize': 3.0, "font.size":4.0,"axes.titlesize":8.0,"axes.labelsize":6.0, 'xtick.labelsize': 4.0, 'ytick.labelsize': 4.0})   
 st.set_option('deprecation.showPyplotGlobalUse', False)
-
 
 
 def display_app_header(main_txt,sub_txt,is_sidebar = False):
@@ -172,20 +164,6 @@ def K_means_optimal_K(X):
     #summary['distortion']= Sum_of_squared_distances
     optimal_k = summary.iloc[summary['silhouette_score'].idxmax()]['k']
     st.write(f'Optimal number of clusters is {optimal_k}')
-    #fig, ax = plt.subplots(figsize=(2, 1))
-    #plt.subplot(1,2,1)
-    # ax.plot(K, summary['distortion'], 'bx-')
-    # ax.xlabel('k')
-    # ax.ylabel('Sum_of_squared_distances')
-    # ax.title('Elbow Method For Optimal k')
-    # ax.savefig(model_dir + "Elbow_Method_For_Optimal_k.png")
-    #plt.subplot(1,2,2)
-    # ax.plot(K, summary['silhouette_score'], 'bx-')
-    # ax.set_xlabel('k',fontsize=fontsize)
-    # ax.set_ylabel('Silhouette score', fontsize=fontsize)
-    # ax.set_title('Silhouette Method For Optimal k',fontsize=fontsize)
-    # fig.savefig(save_dir + "Silhouette_Method_For_Optimal_k.png")
-    # st.pyplot(fig)
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=summary['k'], y=summary['silhouette_score'],
     mode='lines+markers'))
@@ -204,17 +182,9 @@ def run_K_means(X,k):
     return model, clusters
 
 def Nb_of_publications_per_cluster(df):
-    #st.write('Number # of publications per cluster')
-   
     df_count = df['Cluster'].value_counts().reset_index()
     df_count.columns = ['Cluster', 'Count']
     print(df_count) 
-    # fig, ax = plt.subplots()
-    # sns.countplot(x="Cluster", data=df, palette = sns.color_palette("Set2"))
-    # ax.set_title('# of publications per cluster',fontsize=fontsize)
-    # plt.savefig(save_dir + "nb_of_publications_per_cluster.png")
-    # plt.close()
-    # st.pyplot(fig)
     data = [go.Bar(x=df_count['Cluster'], y=df_count['Count'])]
     layout = go.Layout(
     title="Number of publications per cluster",
@@ -226,9 +196,7 @@ def Nb_of_publications_per_cluster(df):
 
 def Distribution_categories_per_cluster(df):
     categories = list(df['Category'].unique())
-    #grouped= df.groupby(['Cluster','Category']).size().to_frame('size')
     grouped= df.groupby(['Cluster','Category']).size().unstack(level=-1)
-    #grouped_1.columns = grouped_1.columns.droplevel()
     print(grouped)
     print(grouped.columns)
     df_count = grouped.reset_index()
@@ -242,25 +210,7 @@ def Distribution_categories_per_cluster(df):
             go.Bar(x=list(df_count['Cluster']), y=list(df_count[category]), name = category, marker_color=colors[i])
         )
     fig.update_layout(title="Distribution of categories per cluster", autosize=True,width=800,height=600, legend_title_text='Category')
-    # plt.savefig(save_dir + "t-sne_pubmed_kmeans.png")
     st.plotly_chart(fig, use_container_width=False)
-
-    # grouped = df.groupby(['Cluster','Category'])
-    # for index, row in grouped.unstack().iterrows():
-    #     print(row['Cluster'])
-    #     print(row['AAV'])
-    #     cluster = row['Cluster'], row['c2'])
-    # #     print(name)
-    #     print(group.size())
-    #     print('----')
-    # fig, ax = plt.subplots()
-    # sns.countplot(x="Cluster", hue='Category', data=df , palette = sns.color_palette("Paired"))
-    # ax.set_title('Distribution of categories per cluster', fontsize=fontsize)
-    # # plt.setp(ax.get_legend().get_title(), fontsize=2)
-    # # plt.setp(ax.get_legend().get_texts(), fontsize=2)
-    # plt.savefig(save_dir +'category_per_cluster.png')
-    # st.pyplot(fig)
-    # plt.close()
 
 def show_nb_pubs():
     st.sidebar.write('Show number of publication per cluster?')
@@ -293,7 +243,6 @@ def Tsne(X, df, categories):
     # plt.savefig(save_dir + "t-sne_pubmed_kmeans.png")
     st.plotly_chart(fig, use_container_width=False)
     return X_embedded
-
 
 def get_top_keywords(tfidf_matrix, clusters, vocabulary, n_terms):
     tfidf_df = pd.DataFrame(X.todense())
@@ -344,8 +293,6 @@ def LDA_model(vectorized_data, num_topics=20):
         st.write('**--------Next Topic--------**')
     # vis = pyLDAvis.gensim.prepare(lda_model,corpus, id2word)
     # pyLDAvis.show(vis)
-
-
 
 
 #################################################################
@@ -415,7 +362,6 @@ if button_selection:
     
     #st.write(df_cluster.head())
 
-
     if check_nb_pubs:
         Nb_of_publications_per_cluster(df_cluster)
 
@@ -441,12 +387,7 @@ if button_selection:
     # Topic modeling on each cluster with Latent Dirichlet Allocation #
     #-----------------------------------------------------------------#
     display_header('Topic modeling on each cluster with Latent Dirichlet Allocation')
-    #button_vis = st.button('Topic Keywords')
-        #st.write('Results will be visible in a new windows...')
     LDA_model(df_cluster.loc[df_cluster['Cluster'] == 1]['Processed_abstract'].tolist(), 3)
 
 
-
-
- 
 
