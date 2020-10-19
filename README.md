@@ -132,7 +132,7 @@ For 12 query topics, the optical k determined was **14**.
 
 
 ## 5. t-SNE dimensionality reduction
-t-Distributed Stochastic Neighbor Embedding (t-SNE) reduces dimensionality while trying to keep similar instances close and dissimilar instances apart. It is mostly used for visualization, in particular to visualize clusters of instances in high-dimensional space.
+T-Distributed Stochastic Neighbor Embedding (t-SNE) reduces dimensionality while trying to keep similar instances close and dissimilar instances apart. It is mostly used for visualization, in particular to visualize clusters of instances in high-dimensional space.
 
 Some clusters can immediately be detected, but many others are harder to separate. In order to help to visually separate different concentrations of topics, clusters found by k-means are used as labels. 
 
