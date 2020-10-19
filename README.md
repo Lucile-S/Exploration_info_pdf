@@ -11,7 +11,7 @@ Those informations are then incluted into a csv file and converted to json forma
 </p>
 
 
-# Get Started 
+## Get Started 
 The use of venv is recommended for creating virtual environment with all necessary packages listed in `requirements.txt`
 
 ```
@@ -21,7 +21,7 @@ source ./venv/bin/activate # OSX - bash/zsh
 pip install -r requirements.txt
 ```
 
-# Get pdf informations
+## Get pdf informations
 Run `run pdf_infos.py` script will create:
 - IDs_table.csv (reference correspondence table) - columns: DOI, PMCID, PMID, Publi_ID, Title, PDF_name.
 
@@ -32,7 +32,7 @@ Run `run pdf_infos.py` script will create:
 Those files contain informations (Metadata and AAV-related informations) about the pdf files present in the ./publications folder.
 
 
-# Streamlit PDF Information Extraction Application
+## Streamlit PDF Information Extraction Application
 
 Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding application) to open the PDF information extraction tool. 
 <p align="center">
@@ -64,7 +64,7 @@ Run ` streamlit run extraction_info_pdf.py` (pdf_infos.py corresponding applicat
 
 
 
-#  Project - Part 2 : Genomic Medicine Literature Clustering Clustering 
+#  Project - Part 2 : Genomic Medicine Literature Clustering 
 The aim of the second part of this project is to clustering similar research article abstracts together in order to see if it's possible to simplify the search for related publications. 
 
 the steps for doing that are the following:
@@ -146,9 +146,58 @@ Using t-SNE our high dimensional features vector can be reduced to 2 dimensions.
 </p>
 
 ### Top 10 words per cluster
+For each cluster, the top keywords was printed out based on their TFIDF score by computing and sorting the average value across a TFIDF dataframe grouped by the cluster label. 
+Also, a word cloud was created using the wordclouda and PIL packages.
+
+<p align="center">
+  <img src="Img/top_word.JPG" width="350" title="t-SNE">
+</p>
+<p align="center">
+  <img src="Img/top_word_2.JPG" width="350" title="t-SNE">
+</p>
+
+Other interesting approaches is to use LDA topic modeling.
 
 ## 6. Topic modeling
+A Latent Dirichlet Allocation - LDA model was instantiated using Gensim. With LDA, each document is described by a distribution of topics and each topic is described by a distribution of words.
 
+Visualiazation was made using the pyLDAvis interactive LDA visualization tool. 
+
+<p align="center">
+  <img src="Img/pyLDA.JPG" width="350" title="t-SNE">
+</p>
+
+
+
+## Streamlit Genomic Medicine Literature Clustering and Topic Modeling Application
+
+Run `streamlit run Article_clustering_app.py` (Article_clustering.py corresponding application) to open the Genomic Medicine Literature Clustering and Topic Modeling Application tool. 
+<p align="center">
+  <img src="Img/app2_1.JPG" width="650">
+</p>
+
+
+<p align="center">
+  <img src="Img/app2_2.JPG" width="650">
+</p>
+
+- Select .
+- Indicate if you want to upload existing csv files (IDs_table.csv, Publication_Metadata.csv, Publication_Informations.csv) in order to add new data to them.
+- Choose to import json data to a Neo4j database by adding a configuration file (`neoj4_database.ini`, file example in src/ folder).
+- Metadata (Title, Authors, DOI, PMID, PMCID, Keywords, Abstract, Journal, Year, Pdf Word Count) are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika), regex patterns and pubmed API.
+- AAV terms, frequency and their linked publication references are retrieved using pdf manipulation packages (Fitz, pdfminer, Tika) and regex patterns
+- Retrieved informations are stored into csv files : 
+  - IDs_table.csv, 
+  - Publication_Metadata.csv,
+  - and Publication_Informations.csv.
+- Json files are generated from those csv files.
+- Csv and json files are saved into the extraction_info_pdf_output/ folder
+- Data are pushed to Neo4j. 
+
+
+<p align="center">
+  <img src="Img/capture_Neo4j_test_example.jpg" width="650" title="Neo4j Example">
+</p>
 
 
 
