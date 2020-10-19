@@ -107,10 +107,12 @@ The preprocessing was performed by running `Publication_clustering/data_processi
 
 ## 3. Represent each abstracts as a vector
 Each abstract was transformed into a feature vector using Term Frequency–inverse Document Frequency (TF-IDF). TF-IDF evaluates how relevant a word is to a document in a collection of documents.
+
 The clustering was based off the TF-IDF matrix  where each row is a vector representation of a publication abstract. The maximum number of features was limited to the top 512 features.
 
 ## 4. K-means clustering
 The TF-IDF matrix was used as input for the k-means algorithm.
+
 First, to determine the best k number of clusters, the silhouette score and the sum of squared distances from each point to its assigned center were computed at different k values.
 
 <p align="center">
@@ -119,6 +121,7 @@ First, to determine the best k number of clusters, the silhouette score and the 
 
 For 12 query topics, the optical k determined was **14**. 
 
+Then, K-means was run with that number of clusters. The K-means clustering and next steps were performed by running `Publication_clustering/clustering.py`.
 
 ### Number of publications per cluster
 <p align="center">
@@ -132,7 +135,8 @@ For 12 query topics, the optical k determined was **14**.
 
 
 ## 5. t-SNE dimensionality reduction
-T-Distributed Stochastic Neighbor Embedding (t-SNE) reduces dimensionality while trying to keep similar instances close and dissimilar instances apart. It is mostly used for visualization, in particular to visualize clusters of instances in high-dimensional space.
+T-Distributed Stochastic Neighbor Embedding (t-SNE) reduces dimensionality while trying to keep similar instances close and dissimilar instances apart.
+It is mostly used for visualization, in particular to visualize clusters of instances in high-dimensional space.
 
 Some clusters can immediately be detected, but many others are harder to separate. In order to help to visually separate different concentrations of topics, clusters found by k-means are used as labels. 
 
