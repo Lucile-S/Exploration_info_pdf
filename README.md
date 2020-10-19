@@ -168,32 +168,27 @@ Visualiazation was made using the pyLDAvis interactive LDA visualization tool.
 ## Streamlit Genomic Medicine Literature Clustering and Topic Modeling Application
 
 Run `streamlit run Article_clustering_app.py` (Article_clustering.py corresponding application) to open the Genomic Medicine Literature Clustering and Topic Modeling Application tool. 
-<p align="center">
-  <img src="Img/app2_1.JPG" width="650">
-</p>
-
-
-<p align="center">
-  <img src="Img/app2_2.JPG" width="650">
-</p>
 
 - Select publication categories among query topics mentioned above.
 - The script runs a K-means clustering. The optimal number of clusters is determined by the Silhouette score method.
 <p align="center">
-  <img src="Img/app2_3.JPG" width="650">
+  <img src="Img/app2_1.JPG" width="650">
 </p>
 <p align="center">
-  <img src="Img/app2_4.JPG" width="650">
+  <img src="Img/app2_2.JPG" width="650">
 </p>
 
 - t-SNE dimensionality reduction is performed
 <p align="center">
-  <img src="Img/tsne_app.JPG" width="650">
+  <img src="Img/tsne_app.JPG" width="850">
 </p>
 - Top 10 words per cluster is displayed 
+<p align="center">
+  <img src="Img/word_app.JPG" width="850">
+</p>
 - LDA is performed on a selected cluster and with a number of topics chosen by the user
 <p align="center">
-  <img src="Img/app2_5.JPG" width="650">
+  <img src="Img/app2_4.JPG" width="850">
 </p>
 
 
